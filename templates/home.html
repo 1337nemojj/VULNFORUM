@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Welcome, {{ user }}</h2>
+
+{% if user == 'admin' %}
+    <!-- Код для поиска, регистрации и удаления пользователей -->
+    <form method="post" action="{{ url_for('search') }}" class="mb-3">
+        <input type="text" name="query" class="form-control" placeholder="Search users">
+        <button type="submit" class="btn btn-info mt-2">Search</button>
+    </form>
+    <form method="post" action="{{ url_for('register') }}" class="mb-3">
+        <input type="text" name="username" class="form-control" placeholder="Username" required>
+        <input type="password" name="password" class="form-control mt-2" placeholder="Password" required>
+        <button type="submit" class="btn btn-success mt-2">Register</button>
+    </form>
+    <form method="post" action="{{ url_for('delete') }}" class="mb-3">
+        <input type="number" name="user_id" class="form-control" placeholder="User ID to delete" required>
+        <button type="submit" class="btn btn-danger mt-2">Delete</button>
+    </form>
+{% endif %}
+
+<!-- Чат сообщений -->
+<h3>Forum Chat</h3>
+<form method="post" action="{{ url_for('post_message') }}" class="mb-3">
+    <textarea name="message" class="form-control" placeholder="Write your message here..." required></textarea>
+    <button type="submit" class="btn btn-primary mt-2">Post Message</button>
+</form>
+
+<!-- Список сообщений -->
+<ul class="list-group">
+    {% for msg in messages %}
+        <li class="list-group-item">
+            <strong>{{ msg['username'] }}:</strong> {{ msg['message'] | safe }}
+            {% if user == 'admin' %}
+                <!-- Кнопка для удаления сообщения админом -->
+                <form method="post" action="{{ url_for('delete_message') }}" style="display:inline;">
+                    <input type="hidden" name="message_id" value="{{ msg['id'] }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
