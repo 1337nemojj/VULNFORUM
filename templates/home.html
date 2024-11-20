@@ -8,6 +8,12 @@
         <input type="text" name="query" class="form-control" placeholder="Search users">
         <button type="submit" class="btn btn-info mt-2">Search</button>
     </form>
+    <h3>Search Results</h3>
+    <ul class="list-group">
+        {% for user in results %}
+            <li class="list-group-item">{{ user['id'] }} - {{ user['username'] }}</li>
+        {% endfor %}
+    </ul>
     <form method="post" action="{{ url_for('register') }}" class="mb-3">
         <input type="text" name="username" class="form-control" placeholder="Username" required>
         <input type="password" name="password" class="form-control mt-2" placeholder="Password" required>
@@ -17,6 +23,7 @@
         <input type="number" name="user_id" class="form-control" placeholder="User ID to delete" required>
         <button type="submit" class="btn btn-danger mt-2">Delete</button>
     </form>
+
 {% endif %}
 
 <!-- Чат сообщений -->
